@@ -25,4 +25,4 @@ def merge_sorted_lists(list1, list2):
     return merged_list
 
     
-print(merge_lists([4, 5, 6], [-2, -1, 0, 7]))
+print(merge_sorted_lists([4, 5, 6], [-2, -1, 0, 7]))
