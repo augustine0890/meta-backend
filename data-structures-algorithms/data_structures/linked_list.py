@@ -119,6 +119,16 @@ class LinkedList:
             before = temp
             temp = after
 
+    # Time O(n) and Space O(1)
+    def find_middle_node(self):
+        if not self.head:
+            return None
+        slow_pointer = fast_pointer = self.head
+        while slow_pointer and fast_pointer.next:
+            slow_pointer = slow_pointer.next
+            fast_pointer = fast_pointer.next.next
+        return slow_pointer
+
 
 my_linked_list = LinkedList(3)
 my_linked_list.append(5)
