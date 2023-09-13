@@ -141,6 +141,20 @@ class LinkedList:
                 return True
         return False
 
+# Time O(n) and Space O(1)
+
+
+def find_kth_from_end(ll, k):
+    slow = fast = ll.head
+    for _ in range(k):
+        if not fast:
+            return None
+        fast = fast.next
+    while fast:
+        slow = slow.next
+        fast = fast.next
+    return slow
+
 
 my_linked_list = LinkedList(3)
 my_linked_list.append(5)
