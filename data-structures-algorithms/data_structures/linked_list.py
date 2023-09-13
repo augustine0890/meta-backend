@@ -129,6 +129,18 @@ class LinkedList:
             fast_pointer = fast_pointer.next.next
         return slow_pointer
 
+    # Time O(n) and Space O(1)
+    def has_loop(self):
+        if not self.head:
+            return False
+        slow_pointer = fast_pointer = self.head
+        while fast_pointer and fast_pointer.next:
+            slow_pointer = slow_pointer.next
+            fast_pointer = fast_pointer.next.next
+            if slow_pointer == fast_pointer:
+                return True
+        return False
+
 
 my_linked_list = LinkedList(3)
 my_linked_list.append(5)
