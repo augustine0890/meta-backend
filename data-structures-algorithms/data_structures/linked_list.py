@@ -141,7 +141,14 @@ class LinkedList:
                 return True
         return False
 
-# Time O(n) and Space O(1)
+
+"""
+Time O(n) and Space O(1)
+- Set two pointers, slow and fast at the head of linked list
+- Move the fast pointer k steps forward
+- Move both slow and fast pointers forward until the fast pointer reaches the last node
+- Return the slow pointer
+"""
 
 
 def find_kth_from_end(ll, k):
