@@ -21,6 +21,17 @@ class SinglyLinkedList:
         self._length += 1
         return self
 
+    # Time: O(1) and Space: O(1)
+    def prepend(self, value):
+        new_node = Node(value)
+        if not self._length:
+            self.head = self.tail = new_node
+        else:
+            new_node.next = self.head
+            self.head = new_node
+        self._length += 1
+        return self
+
 
 my_list = SinglyLinkedList()
 print(my_list._length)
