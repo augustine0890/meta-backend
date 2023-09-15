@@ -31,3 +31,9 @@
     - the number of recursive calls
     - the other operations done inside the function
     - the space complexity (the max number of stack frames)
+
+# Hash Maps - Tables (Dictionaries)
+- Needs to be fast
+- Needs to always give the same result (given the same input)
+- Needs to distribute keys uniformly
+- The require more memory for storing keys and values
