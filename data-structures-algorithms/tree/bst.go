@@ -80,6 +80,78 @@ func (bt *BinaryTree) Contains(value int) bool {
 	return false
 }
 
+func (bt *BinaryTree) Remove(value int) {
+	var parent *Node
+	current := bt.Root
+	isLeftChild := false
+
+	// Find the node to be deleted and its parent
+	for current != nil && current.Value != value {
+		parent = current
+		if value < current.Value {
+			current = parent.Left
+			isLeftChild = true
+		} else {
+			current = parent.Right
+			isLeftChild = false
+		}
+	}
+
+	if current == nil {
+		return // Node not found
+	}
+
+	// Case 1: Node with no children
+	if current.Left == nil && current.Right == nil {
+		if current == bt.Root {
+			bt.Root = nil
+		} else if isLeftChild {
+			parent.Left = nil
+		} else {
+			parent.Right = nil
+		}
+	} else if current.Left == nil {
+		// Case 2-1: Node with no left child (one child right)
+		if current == bt.Root {
+			bt.Root = current.Right
+		} else if isLeftChild {
+			parent.Left = current.Right
+		} else {
+			parent.Right = current.Right
+		}
+	} else if current.Right == nil {
+		// Case 2-2: Node with no right child (one child left)
+		if current == bt.Root {
+			bt.Root = current.Left
+		} else if isLeftChild {
+			parent.Left = current.Left
+		} else {
+			parent.Right = current.Left
+		}
+	} else {
+		// Case 3: Node with two children
+		successorParent := current
+		successor := current.Right
+		for successor.Left != nil {
+			successorParent = successor
+			successor = successor.Left
+		}
+		if successor != current.Right {
+			successorParent.Left = successor.Right
+			successor.Right = current.Right
+		}
+
+		if current == bt.Root {
+			bt.Root = successor
+		} else if isLeftChild {
+			parent.Left = successor
+		} else {
+			parent.Right = successor
+		}
+		successor.Left = current.Left
+	}
+}
+
 // Returns a new, random binary search tree holding the values 1k, 2k, ..., nk.
 func CreateRandomBinaryTree(n, k int) *BinaryTree {
 	bt := &BinaryTree{}
