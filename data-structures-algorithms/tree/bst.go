@@ -203,7 +203,7 @@ func (bt *BinaryTree) BreadthFirstTraversal() {
 }
 
 // Time: O(n); Space: O(h), where h is the height of the tree, due to the stack size
-func (bt *BinaryTree) DFTPreOrder() {
+func (bt *BinaryTree) PreOrderTraversal() {
 	if bt.Root == nil {
 		return
 	}
@@ -224,6 +224,56 @@ func (bt *BinaryTree) DFTPreOrder() {
 
 		if current.Left != nil {
 			stack = append(stack, current.Left)
+		}
+	}
+	fmt.Println(visited)
+}
+
+// Traverse the left subtree, visit the root (current node), and then traverse the right subtree
+func (bt *BinaryTree) InOrderTraversal() {
+	stack := []*Node{}
+	current := bt.Root
+	visited := []int{}
+
+	for current != nil || len(stack) > 0 {
+		for current != nil {
+			stack = append(stack, current)
+			current = current.Left
+		}
+		current = stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+		visited = append(visited, current.Value)
+		current = current.Right
+	}
+	fmt.Println(visited)
+}
+
+// Traverse the left subtree, traverse the right subtree, and then visit the root (current node).
+func (bt *BinaryTree) PostOrderTraversal() {
+	if bt.Root == nil {
+		return
+	}
+
+	stack := []*Node{}
+	var lastVisted *Node
+	visited := []int{}
+
+	current := bt.Root
+	for current != nil || len(stack) > 0 {
+		if current != nil {
+			stack = append(stack, current)
+			current = current.Left
+		} else {
+			peekNode := stack[len(stack)-1]
+			if peekNode.Right != nil && lastVisted != peekNode.Right {
+				// If right child exists AND traversing node from left child, move right
+				current = peekNode.Right
+			} else {
+				// If right child doesn't exist OR traversing from right child, visit node
+				visited = append(visited, peekNode.Value)
+				lastVisted = stack[len(stack)-1]
+				stack = stack[:len(stack)-1]
+			}
 		}
 	}
 	fmt.Println(visited)
@@ -291,6 +341,8 @@ func main() {
 	target := 11
 	fmt.Printf("The closest value to %d in the BST is %d.\n", target, tree.FindClosestValue(target))
 
-	tree.DFTPreOrder()
+	tree.PreOrderTraversal()
+	tree.InOrderTraversal()
+	tree.PostOrderTraversal()
 
 }
