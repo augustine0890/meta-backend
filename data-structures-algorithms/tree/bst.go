@@ -202,6 +202,33 @@ func (bt *BinaryTree) BreadthFirstTraversal() {
 	fmt.Println(visited)
 }
 
+// Time: O(n); Space: O(h), where h is the height of the tree, due to the stack size
+func (bt *BinaryTree) DFTPreOrder() {
+	if bt.Root == nil {
+		return
+	}
+
+	stack := []*Node{bt.Root}
+	// Store the visted nodes
+	visited := []int{}
+
+	for len(stack) > 0 {
+		current := stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+
+		visited = append(visited, current.Value)
+
+		if current.Right != nil {
+			stack = append(stack, current.Right)
+		}
+
+		if current.Left != nil {
+			stack = append(stack, current.Left)
+		}
+	}
+	fmt.Println(visited)
+}
+
 // Time: O(logN); Space: O(1)
 func (bt *BinaryTree) FindClosestValue(target int) int {
 	// If the tree is empty, return the zero value of int
@@ -263,4 +290,7 @@ func main() {
 	// Finding the closest value to the target
 	target := 11
 	fmt.Printf("The closest value to %d in the BST is %d.\n", target, tree.FindClosestValue(target))
+
+	tree.DFTPreOrder()
+
 }
