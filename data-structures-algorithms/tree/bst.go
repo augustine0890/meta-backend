@@ -202,6 +202,37 @@ func (bt *BinaryTree) BreadthFirstTraversal() {
 	fmt.Println(visited)
 }
 
+// Time: O(logN); Space: O(1)
+func (bt *BinaryTree) FindClosestValue(target int) int {
+	// If the tree is empty, return the zero value of int
+	if bt.Root == nil {
+		return 0
+	}
+
+	// Initialize the closest value to the value of the root node
+	closest := bt.Root.Value
+	currentNode := bt.Root
+
+	// Traverse the tree
+	for currentNode != nil {
+		// Update the closest value
+		if abs(target-closest) > abs(target-currentNode.Value) {
+			closest = currentNode.Value
+		}
+
+		// Decide which part of the tree to exlore next
+		if target < currentNode.Value {
+			currentNode = currentNode.Left
+		} else if target > currentNode.Value {
+			currentNode = currentNode.Right
+		} else {
+			// If the target is equal to the current node's value, it's the closest
+			break
+		}
+	}
+	return closest
+}
+
 // Returns a new, random binary search tree holding the values 1k, 2k, ..., nk.
 func CreateRandomBinaryTree(n, k int) *BinaryTree {
 	bt := &BinaryTree{}
@@ -209,6 +240,14 @@ func CreateRandomBinaryTree(n, k int) *BinaryTree {
 		bt.Insert(k * (v + 1))
 	}
 	return bt
+}
+
+// Hepler function to calculate the absolute vaule of an integer
+func abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
 }
 
 func main() {
@@ -221,4 +260,7 @@ func main() {
 	fmt.Println(tree.Contains(20)) // false
 	// Perform the traversal
 	tree.BreadthFirstTraversal()
+	// Finding the closest value to the target
+	target := 11
+	fmt.Printf("The closest value to %d in the BST is %d.\n", target, tree.FindClosestValue(target))
 }
