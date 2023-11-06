@@ -168,6 +168,40 @@ func (bt *BinaryTree) Remove(value int) {
 	}
 }
 
+// Level-order traversal
+// Space: O(W), where W is maximum width of the tree.
+// Time: O(N), where N is the number of nodes in the tree
+func (bt *BinaryTree) BreadthFirstTraversal() {
+	if bt.Root == nil {
+		return
+	}
+
+	// Create a queue and enqueue the root node
+	queue := []*Node{bt.Root}
+	visited := []int{}
+
+	for len(queue) > 0 {
+		// Dequeue the first node from the queue
+		current := queue[0]
+		queue = queue[1:]
+
+		// Process the current node
+		// fmt.Println(current.Value)
+		visited = append(visited, current.Value)
+
+		// Enque the left child if it exists
+		if current.Left != nil {
+			queue = append(queue, current.Left)
+		}
+
+		// Enque the rifht child if it exists
+		if current.Right != nil {
+			queue = append(queue, current.Right)
+		}
+	}
+	fmt.Println(visited)
+}
+
 // Returns a new, random binary search tree holding the values 1k, 2k, ..., nk.
 func CreateRandomBinaryTree(n, k int) *BinaryTree {
 	bt := &BinaryTree{}
@@ -185,4 +219,6 @@ func main() {
 	fmt.Println(tree.Contains(11)) // false
 	tree.Remove((20))
 	fmt.Println(tree.Contains(20)) // false
+	// Perform the traversal
+	tree.BreadthFirstTraversal()
 }
