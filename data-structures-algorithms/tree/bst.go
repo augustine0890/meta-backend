@@ -80,6 +80,7 @@ func (bt *BinaryTree) Contains(value int) bool {
 	return false
 }
 
+// Space: O(1); Time Best: O(logN); Time Worst: O(N)
 func (bt *BinaryTree) Remove(value int) {
 	var parent *Node
 	current := bt.Root
@@ -132,15 +133,28 @@ func (bt *BinaryTree) Remove(value int) {
 		// Case 3: Node with two children
 		successorParent := current
 		successor := current.Right
+		// The in-order successor is the smallest node in the node's right subtree.
 		for successor.Left != nil {
 			successorParent = successor
 			successor = successor.Left
 		}
+
+		// Once the in-order successor is found, there are two situations to handle:
+		// 1. The in-order successor is the right child of the node to be deleted.
+		// 2. The in-order successor is further down the left subtree of the node's right child.
+
+		// If the successor is not the immediate right child of the node to be deleted,
+		// we need to adjust the successor's parent's left pointer to point to the
+		// successor's right child (if it exists). This effectively removes the successor
+		// from its current position in the tree.
 		if successor != current.Right {
 			successorParent.Left = successor.Right
+			// Also, the successor's right child must now become the left child of the
+			// successor's parent.
 			successor.Right = current.Right
 		}
 
+		// Place the successor in the position of the node to be deleted
 		if current == bt.Root {
 			bt.Root = successor
 		} else if isLeftChild {
@@ -148,6 +162,8 @@ func (bt *BinaryTree) Remove(value int) {
 		} else {
 			parent.Right = successor
 		}
+
+		// Finally, the successor's left child becomes the left child of the node to be deleted
 		successor.Left = current.Left
 	}
 }
@@ -167,4 +183,6 @@ func main() {
 	tree.Insert(110)
 	fmt.Println(tree.Contains(20)) // true
 	fmt.Println(tree.Contains(11)) // false
+	tree.Remove((20))
+	fmt.Println(tree.Contains(20)) // false
 }
