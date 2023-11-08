@@ -18,3 +18,5 @@
         }
     ```
     - Now you can run `npm run build` to compile your TypeScript code and `npm run start` to run the compiled code.
+
+- Create the React Typescript project with Vite: `npm create vite@latest react-ts-basics`
