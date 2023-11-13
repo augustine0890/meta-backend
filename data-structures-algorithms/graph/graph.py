@@ -1,3 +1,6 @@
+from collections import deque
+
+
 class Graph:
     def __init__(self):
         self.adjacency_list = {}
@@ -33,3 +36,45 @@ class Graph:
             self.adjacency_list[neighbor].remove(vertex)
         self.adjacency_list.pop[vertex]
         return self
+
+    # Time Complexity: O(V + E), Space Complexity: O(V)
+    def breadth_first_traversal(self, start):
+        if start not in self.adjacency_list:
+            raise Exception("Vertex not in graph")
+        queue = deque([start])
+        visited = set()
+        traversal_result = []
+
+        while queue:
+            vertex = queue.popleft()
+            if vertex not in visited:
+                traversal_result.append(vertex)
+                visited.add(vertex)  # Add vertex to the visited set
+                # Add adjacent vertices to the queue
+                queue.extend(
+                    [vertex for vertex in self.adjacency_list[vertex] if vertex not in visited])
+        return traversal_result
+
+
+graph = Graph()
+graph.add_vertex("A")
+graph.add_vertex("B")
+graph.add_vertex("C")
+graph.add_edge("A", "B")
+graph.add_edge("B", "C")
+print(graph.breadth_first_traversal("A"))  # Expected Output: ["A", "B", "C"]
+
+graph = Graph()
+graph.add_vertex("1").add_vertex("2").add_vertex("3")
+graph.add_vertex("4").add_vertex("5")
+graph.add_edge("1", "2").add_edge("2", "3")
+graph.add_edge("4", "5")
+
+print(graph.breadth_first_traversal("1"))  # Expected Output: ["1", "2", "3"]
+print(graph.breadth_first_traversal("4"))  # Expected Output: ["4", "5"]
+
+graph = Graph()
+graph.add_vertex("X").add_vertex("Y").add_vertex("Z")
+graph.add_edge("X", "Y").add_edge("Y", "Z").add_edge("Z", "X")
+
+print(graph.breadth_first_traversal("X"))  # Expected Output: ["X", "Y", "Z"]
