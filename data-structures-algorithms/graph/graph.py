@@ -55,6 +55,23 @@ class Graph:
                     [vertex for vertex in self.adjacency_list[vertex] if vertex not in visited])
         return traversal_result
 
+    # Time Complexity: O(V + E), Space Complexity: O(V)
+    def depth_first_traversal(self, start):
+        if start not in self.adjacency_list:
+            raise Exception("Vertex not in graph")
+        stack = [start]
+        visited = set()
+        traversal_result = []
+
+        while stack:
+            vertex = stack.pop()
+            if vertex not in visited:
+                visited.add(vertex)
+                traversal_result.append(vertex)
+                stack.extend(
+                    [vertex for vertex in self.adjacency_list[vertex] if vertex not in visited])
+        return traversal_result
+
 
 graph = Graph()
 graph.add_vertex("A")
@@ -63,6 +80,7 @@ graph.add_vertex("C")
 graph.add_edge("A", "B")
 graph.add_edge("B", "C")
 print(graph.breadth_first_traversal("A"))  # Expected Output: ["A", "B", "C"]
+print(graph.depth_first_traversal("A"))  # Expected Output: ["A", "B", "C"]
 
 graph = Graph()
 graph.add_vertex("1").add_vertex("2").add_vertex("3")
@@ -78,3 +96,14 @@ graph.add_vertex("X").add_vertex("Y").add_vertex("Z")
 graph.add_edge("X", "Y").add_edge("Y", "Z").add_edge("Z", "X")
 
 print(graph.breadth_first_traversal("X"))  # Expected Output: ["X", "Y", "Z"]
+
+graph = Graph()
+graph.add_vertex("A").add_vertex("B").add_vertex("C").add_vertex("D")
+graph.add_vertex("E").add_vertex("F")
+graph.add_edge("A", "B").add_edge("A", "C").add_edge("B", "D")
+graph.add_edge("C", "E").add_edge("D", "E").add_edge("E", "F")
+
+# Expected Output: ["A", "B", "C", "D", "E", "F"]
+print(graph.breadth_first_traversal("A"))
+# Expected Output: ["A", "C", "E", "F", "D", "B"]
+print(graph.depth_first_traversal("A"))
