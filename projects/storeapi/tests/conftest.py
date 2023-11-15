@@ -3,12 +3,13 @@ from typing import AsyncGenerator, Generator
 import pytest
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
+
 from storeapi.main import app
 from storeapi.routers.post import comment_table, post_table
 
 
 @pytest.fixture(scope="session")
-def anyio_backen():
+def anyio_backend():
     return "asyncio"
 
 
@@ -17,7 +18,8 @@ def client() -> Generator:
     yield TestClient(app)
 
 
-@pytest.fixture(autouse=True)
+# @pytest.fixture(autouse=True)
+@pytest.fixture()
 async def db() -> Generator:
     post_table.clear()
     comment_table.clear()
