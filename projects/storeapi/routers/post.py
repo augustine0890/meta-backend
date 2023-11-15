@@ -1,5 +1,12 @@
 from fastapi import APIRouter, HTTPException
-from models.post import Comment, CommentIn, UserPost, UserPostIn, UserPostWithComments
+
+from storeapi.models.post import (
+    Comment,
+    CommentIn,
+    UserPost,
+    UserPostIn,
+    UserPostWithComments,
+)
 
 router = APIRouter()
 post_table = {}
@@ -10,7 +17,7 @@ def find_post(post_id: int):
     return post_table.get(post_id)
 
 
-@router.post("/post", response_model=UserPost)
+@router.post("/post", response_model=UserPost, status_code=201)
 async def create_post(post: UserPostIn):
     data = post.model_dump()
     last_record_id = len(post_table)
@@ -24,7 +31,7 @@ async def get_all_posts():
     return list(post_table.values())
 
 
-@router.post("/comment", response_model=Comment)
+@router.post("/comment", response_model=Comment, status_code=201)
 async def create_comment(comment: CommentIn):
     post = post_table.get(comment.post_id)
     if not post:
