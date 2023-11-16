@@ -1,46 +1,47 @@
+import os
+from functools import lru_cache
 from typing import Optional
 
 from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    ENV_STAGE: Optional[str] = "dev" 
-    class Config:
-        env_file = ".env"
-
-class GlobalConfig(BaseSettings):
-    DATABASE_URL: str = "sqlite:///default.db"  # Default value for DATABASE_URL
+    DEBUG: bool = False
+    TESTING: bool = False
+    ENVIRONMENT: str = os.getenv("ENVIRONMENT", "DEV")
+    DATABASE_URL: Optional[str] = os.getenv("DATABASE_URL", "sqlite:///data.db")
     DB_FORCE_ROLL_BACK: bool = False
 
-    class Config(Settings.Config):
-        pass
 
-class DevSettings(GlobalConfig):
-    class Config(Settings.Config):
-        env_prefix = "DEV_"
+class DevConfig(Settings):
+    DEBUG: bool = True
 
 
-class ProdSettings(GlobalConfig):
-    class Config(Settings.Config):
-        env_prefix = "PROD_"
-
-
-class TestSettings(GlobalConfig):
+class TestConfig(Settings):
+    DEBUG: bool = True
+    TESTING: bool = True
     DATABASE_URL: str = "sqlite:///test.db"
     DB_FORCE_ROLL_BACK: bool = True
 
-    class Config(Settings.Config):
-        env_prefix = "TEST_"
+
+class FactoryConfig:
+    """Returns a config instance depends on the ENV_STATE variable."""
+
+    def __init__(self, environment: Optional[str] = "DEV"):
+        self.environment = environment
+
+    def __call__(self):
+        if self.environment == "TEST":
+            return TestConfig()
+        elif self.environment == "PROD":
+            return Settings()
+        return DevConfig()
 
 
-def get_settings(environment: str) -> Settings:
-    if environment == "prod":
-        return ProdSettings()
-    elif environment == "test":
-        return TestSettings()
-    else:
-        # Default to development settings
-        return DevSettings()
+@lru_cache()
+def get_configuration():
+    return FactoryConfig(Settings().ENVIRONMENT)()
 
-# Instantiate the settings based on the current environment
-settings = get_settings(Settings().ENV_STAGE)
+
+print("Getting configuration")
+config = get_configuration()
