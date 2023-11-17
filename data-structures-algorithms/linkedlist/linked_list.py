@@ -1,35 +1,55 @@
 class Node:
-    def __init__(self, data):
-        self.value = data
-        self.next = None
+    def __init__(self, value, next_node=None):
+        self.value = value
+        self.next_node = next_node
+
+    def get_value(self):
+        return self.value
+
+    def get_next_node(self):
+        return self.next_node
+
+    def set_next_node(self, next_node):
+        self.next_node = next_node
 
 
 class LinkedList:
-    def __init__(self):
-        self.head = None
-        self.tail = None
+    def __init__(self, value=None):
+        self.head_node = Node(value)
 
-    def insert_at_beginning(self, data):
-        # Create the new node
-        new_node = Node(data)
-        # Check whether the linked list has a head node
-        if self.head:
-            # Point the next node of the new node to the head
-            new_node.next = self.head
-            self.head = new_node
-        else:
-            self.tail = new_node
-            self.head = new_node
+    def get_head_node(self):
+        return self.head_node
 
-    def remove_at_beginning(self):
-        # The "next" node of the head becomes the new head node
-        self.head = self.head.next
+    # Add your insert_beginning and stringify_list methods below:
+    def insert_beginning(self, new_value):
+        new_node = Node(new_value)
+        new_node.set_next_node(self.head_node)
+        self.head_node = new_node
 
-    def search(self, data):
-        current_data = self.head
-        while current_data:
-            if current_data.value == data:
-                return True
-            else:
-                current_data = current_data.next
-        return False
+    def stringify_list(self):
+        string_list = ""
+        current_node = self.get_head_node()
+        while current_node:
+            if current_node.get_value() is not None:
+                string_list += str(current_node.get_value()) + "\n"
+            current_node = current_node.get_next_node()
+        return string_list
+
+    def remove_node(self, value_to_remove):
+        current_node = self.head_node
+        previous_node = None
+        while current_node:
+            if current_node.get_value() == value_to_remove:
+                if previous_node:
+                    previous_node.set_next_node(current_node.get_next_node())
+                else:
+                    self.head_node = current_node.get_next_node()
+                return
+            previous_node, current_node = current_node, current_node.get_next_node()
+
+
+ll = LinkedList(5)
+ll.insert_beginning(70)
+ll.insert_beginning(5675)
+ll.insert_beginning(90)
+print(ll.stringify_list())
