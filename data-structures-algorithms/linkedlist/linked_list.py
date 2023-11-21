@@ -88,12 +88,27 @@ class LinkedList:
         node1.set_next_node(node2.get_next_node())
         node2.set_next_node(temp)
 
+    def nth_last_node(self, n):
+        nth_node = None
+        tail_pointer = self.head_node
+        count = 1
+        while tail_pointer != None:
+            tail_pointer = tail_pointer.get_next_node()
+            count += 1
+            if count >= n + 1:
+                if nth_node == None:
+                    nth_node = self.head_node
+                else:
+                    nth_node = nth_node.get_next_node()
+        return nth_node
+
 
 ll = LinkedList(5)
 ll.insert_beginning(70)
 ll.insert_beginning(5675)
 ll.insert_beginning(90)
 print(ll.stringify_list())
+print(ll.nth_last_node(2).get_value())
 
 ll = LinkedList()
 for i in range(10):
@@ -101,8 +116,4 @@ for i in range(10):
 
 print(ll.stringify_list())
 ll.swap(9, 8)
-print(ll.stringify_list())
-ll.swap(5, 4)
-print(ll.stringify_list())
-ll.swap(1, 0)
 print(ll.stringify_list())
