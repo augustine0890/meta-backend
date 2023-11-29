@@ -122,3 +122,32 @@ for i in range(len(nums)):
     print(f"Expected output: {expected_outputs[i]}")
     print(f"Test passed: {result == expected_outputs[i]}")
     print("---------------------------------------")
+
+# Time: O(N) and Space: O(N)
+def stream_max(nums):
+    current_max = float("-inf")
+    result = []
+    for num in nums:
+        current_max = max(current_max, num)
+        result.append(current_max)
+    return result
+
+
+test_cases = [
+    ([], []),
+    ([1], [1]),
+    ([1, 2, 3, 4, 5], [1, 2, 3, 4, 5]),
+    ([1, 2, 2, 1, 3, 3, 3, 2, 2], [1, 2, 2, 2, 3, 3, 3, 3, 3]),
+    ([-1, -2, -3, -4, -5], [-1, -1, -1, -1, -1]),
+]
+
+for i, (nums, expected) in enumerate(test_cases):
+    result = stream_max(nums)
+    print(f"\nTest {i+1}")
+    print(f"Input: {nums}")
+    print(f"Expected Output: {expected}")
+    print(f"Actual Output: {result}")
+    if result == expected:
+        print("Status: Passed")
+    else:
+        print("Status: Failed")
