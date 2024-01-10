@@ -15,6 +15,9 @@ A demonstration of a (relatively) complete solution with test cases, and documen
     - `poetry export -f requirements.txt --output requirements-dev.txt --dev` only dev dependencies
 - Install the dependencies in `pyproject.toml`: `poetry install`
 
+### pytest
+- Write small tests (unit tests)
+
 ## Installation
 This isn't installed with PIP, Instead, checkout the Github repository.
 After checkout, use the `requirements-dev.txt` to install the needed development components.
