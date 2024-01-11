@@ -1,10 +1,10 @@
 """
     Project Zero: A template for other projects
 """
-import hello_world
+import src.hello_world as app
 
 
 def test_hello_world(capsys):
-    hello_world.main([])
+    app.main([])
     out, err = capsys.readouterr()
     assert "Hello, World!" in out

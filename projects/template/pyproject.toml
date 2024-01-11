@@ -6,6 +6,9 @@ authors = ["augustine <augustino0890@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 
+[[tool.poetry.packages]]
+include = "src"
+
 [tool.poetry.dependencies]
 python = ">=3.10"
 click = "^8.1.7"
